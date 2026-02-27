@@ -125,8 +125,7 @@
         let hasClicked = localStorage.getItem('hasClickedImpact');
 
         function updateDisplay(val) {
-            countDisplay.innerText = val;
-            progressFill.style.width = (val/goal) * 100 + '%';
+            progressFill.style.width = (baseCount/goal) * 100 + '%';
         }
 
         // If they already clicked in the past, show 6
@@ -157,6 +156,7 @@ function closeModal() {
     </script>
 </body>
 </html>
+
 
 
 
