@@ -122,13 +122,14 @@
 
         // Initial Logic: Start at 5. Check if user already clicked.
         let baseCount = 11;
+		updateDisplay(baseCount)
         let hasClicked = localStorage.getItem('hasClickedImpact');
 
         function updateDisplay(val) {
-            progressFill.style.width = (baseCount/goal) * 100 + '%';
+            progressFill.style.width = (val/goal) * 100 + '%';
         }
 
-        // If they already clicked in the past, show 6
+        // If they already clicked in the past, show 12
         if (hasClicked) {
             updateDisplay(baseCount + 1);
             impactBtn.disabled = true;
@@ -156,6 +157,7 @@ function closeModal() {
     </script>
 </body>
 </html>
+
 
 
 
