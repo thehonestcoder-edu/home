@@ -9,72 +9,104 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-        .user-tag {
-            display: block;
-            margin-top: 10px;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6); /* Dimmer than the main text */
-            font-style: italic;
-        }
-        /* Container for the testimonials */
-        .testimonial-container {
-            position: relative;
-            height: 150px; /* Adjust based on text length */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 40px 0;
-        }
-        
-        /* Individual Glass Cards */
-        .testimonial-card {
-            position: absolute;
-            width: 80%;
-            max-width: 500px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05); /* See-through white */
-            backdrop-filter: blur(10px); /* Glass blur effect */
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            text-align: center;
-            color: #fff;
-            box-shadow: 0 0 20px rgba(0, 255, 170, 0.2); /* Soft green glow */
-            opacity: 0;
-            animation: fadeCycle 12s infinite;
-        }
-        
-        /* The Timing Logic (For 3 cards) */
-        .testimonial-card:nth-child(2) { animation-delay: 4s; }
-        .testimonial-card:nth-child(3) { animation-delay: 8s; }
-        
-        @keyframes fadeCycle {
-            0% { opacity: 0; transform: translateY(10px); }
-            10% { opacity: 1; transform: translateY(0); }  /* Fade in & slide up */
-            30% { opacity: 1; }                             /* Stay visible */
-            40% { opacity: 0; transform: translateY(-10px); } /* Fade out & slide up */
-            100% { opacity: 0; }
-        }
-        
-        html { 
-            scroll-behavior: smooth; 
-        }
+        /* Base Styling */
+        html { scroll-behavior: smooth; }
         body {
             background-color: #000000;
             color: #ffffff;
             font-family: 'Roboto Mono', monospace;
         }
-        .neon-text-cyan {
-            text-shadow: 0 0 15px rgba(0, 242, 255, 0.7);
+
+        /* Testimonial Slider - Slide Left Logic */
+        .testimonial-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .neon-text-orange {
-            text-shadow: 0 0 15px rgba(255, 103, 25, 0.7);
+        
+        .testimonial-card {
+            position: absolute;
+            width: 90%;
+            max-width: 550px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 20px;
+            text-align: center;
+            opacity: 0;
+            animation: slideLeft 12s infinite;
         }
+
+        /* Hover to pause - Lazy Dev UX */
+        .testimonial-container:hover .testimonial-card,
+        .testimonial-container:hover ~ .dot-container .dot {
+            animation-play-state: paused;
+        }
+
+        .user-tag {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #00F2FF;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Slide Animation: Entry (Right), Stay, Exit (Left) */
+        @keyframes slideLeft {
+            0% { opacity: 0; transform: translateX(100px); }
+            5% { opacity: 1; transform: translateX(0); }
+            30% { opacity: 1; transform: translateX(0); }
+            35% { opacity: 0; transform: translateX(-100px); }
+            100% { opacity: 0; }
+        }
+
+        /* Timing for 3 cards */
+        .testimonial-card:nth-child(1) { animation-delay: 0s; }
+        .testimonial-card:nth-child(2) { animation-delay: 4s; }
+        .testimonial-card:nth-child(3) { animation-delay: 8s; }
+
+        /* Glowing Dots Logic */
+        .dot-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: -20px;
+            margin-bottom: 40px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.5s ease;
+        }
+
+        @keyframes dotGlow {
+            0%, 30% { background: #00F2FF; box-shadow: 0 0 15px #00F2FF; transform: scale(1.2); }
+            31%, 100% { background: rgba(255, 255, 255, 0.2); box-shadow: none; transform: scale(1); }
+        }
+
+        .dot:nth-child(1) { animation: dotGlow 12s infinite; }
+        .dot:nth-child(2) { animation: dotGlow 12s infinite 4s; }
+        .dot:nth-child(3) { animation: dotGlow 12s infinite 8s; }
+
+        /* Neon & Glass Accents */
+        .neon-text-cyan { text-shadow: 0 0 15px rgba(0, 242, 255, 0.7); }
+        .neon-text-orange { text-shadow: 0 0 15px rgba(255, 103, 25, 0.7); }
         .glass-card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        /* Custom scrollbar for pro look */
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
@@ -86,13 +118,9 @@
 
     <section class="relative min-h-screen flex flex-col justify-center items-center text-center p-6 bg-gradient-to-b from-black to-gray-900">
         <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#00F2FF 1px, transparent 1px); background-size: 30px 30px;"></div>
-        
         <h1 class="text-5xl md:text-7xl font-bold mb-4 text-cyan-400 neon-text-cyan">THE HONEST CODER</h1>
         <p class="text-xl md:text-2xl text-gray-400 mb-10 max-w-2xl">Making Python and Math feel like common sense.</p>
-        
-        <a href="#resources" class="px-10 py-4 bg-cyan-400 text-black font-bold rounded-full hover:scale-105 transition-transform shadow-[0_0_20px_rgba(0,242,255,0.5)]">
-            Explore Now
-        </a>
+        <a href="#resources" class="px-10 py-4 bg-cyan-400 text-black font-bold rounded-full hover:scale-105 transition-transform shadow-[0_0_20px_rgba(0,242,255,0.5)]">Explore Now</a>
     </section>
 
     <section class="py-20 px-6 max-w-4xl mx-auto">
@@ -104,7 +132,7 @@
         </div>
     </section>
 
-    <section class="py-20 bg-gray-900/50 text-center px-6">
+    <section class="py-20 bg-gray-900/50 text-center px-6 border-y border-white/5">
         <h3 class="text-3xl font-bold mb-8 text-cyan-400">Your Impact Matters</h3>
         <div class="max-w-xl mx-auto mb-8">
             <div class="flex justify-between text-sm mb-2 text-gray-400">
@@ -115,24 +143,40 @@
                 <div id="progress-fill" class="h-full bg-gradient-to-r from-cyan-400 to-orange-500 transition-all duration-1000" style="width: 0%"></div>
             </div>
         </div>
-
-        <div class="testimonial-slider">
-            <div class="testimonial-card">
-                <p>"The 'Star' thing actually makes sense. I don't have to carry numbers in my head anymore."</p>
-                <span class="user-tag">— 10th Grade Peer</span>
-            </div>
-        </div>
-        
         <button id="impact-btn" class="px-8 py-4 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95">
             This site helped me!
         </button>
         <p id="thanks-msg" class="mt-4 text-green-400 hidden font-mono">✓ Impact Recorded. You're awesome!</p>
     </section>
 
+    <section class="py-24 bg-black overflow-hidden">
+        <h2 class="text-4xl font-bold text-center mb-16 text-white">Testimonials</h2>
+        
+        <div class="testimonial-container">
+            <div class="testimonial-card">
+                <p class="text-lg text-gray-200">"The 'Star' thing actually makes sense. I don't have to carry numbers in my head anymore."</p>
+                <span class="user-tag">— 10th Grade Peer</span>
+            </div>
+            <div class="testimonial-card">
+                <p class="text-lg text-gray-200">"Wait, 45 x 99 is just 44 and 55? That's literally life-changing for exams."</p>
+                <span class="user-tag">— Competitive Aspirant</span>
+            </div>
+            <div class="testimonial-card">
+                <p class="text-lg text-gray-200">"Finally a place where math doesn't feel like a list of rules to memorize."</p>
+                <span class="user-tag">— 8th Grade Student</span>
+            </div>
+        </div>
+
+        <div class="dot-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </section>
+
     <section id="resources" class="py-20 px-6 max-w-6xl mx-auto">
         <h2 class="text-4xl font-bold text-center mb-16 text-cyan-400 neon-text-cyan">Resource Hub</h2>
         <div class="grid md:grid-cols-2 gap-10">
-            
             <div class="glass-card p-8 rounded-2xl hover:border-cyan-400/50 transition-all group">
                 <h3 class="text-2xl font-bold mb-4 text-cyan-400">Python Foundation</h3>
                 <p class="text-gray-400 mb-8">Download PDF notes on Python. Master the fundamentals without the headache.</p>
@@ -146,15 +190,14 @@
                     Access Vault
                 </a>
             </div>
-
         </div>
     </section>
 
     <div id="modal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-[100] p-6">
         <div class="glass-card p-10 rounded-3xl max-w-sm text-center border-2 border-cyan-400">
             <h3 class="text-3xl font-bold text-cyan-400 mb-4">You're Early! 🚀</h3>
-            <p class="text-gray-300 mb-8 leading-relaxed">I'm currently simplifying these notes to make them feel like common sense. Quality takes a little time!</p>
-            <button onclick="closeModal()" class="px-8 py-3 bg-cyan-400 text-black font-bold rounded-lg hover:scale-105 transition-transform">Got it, thanks!</button>
+            <p class="text-gray-300 mb-8 leading-relaxed">I'm currently simplifying these notes to make them feel like common sense.</p>
+            <button onclick="closeModal()" class="px-8 py-3 bg-cyan-400 text-black font-bold rounded-lg hover:scale-105 transition-transform">Got it!</button>
         </div>
     </div>
 
@@ -166,34 +209,24 @@
         <p class="text-gray-600 text-sm">© 2026 The Honest Coder. Built for students, by a student.</p>
     </footer>
 
-    <script data-goatcounter="https://thehonestcoder.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-    
     <script>
-        // Modal Control
-        function openModal() {
-            document.getElementById('modal').classList.remove('hidden');
-        }
-        function closeModal() {
-            document.getElementById('modal').classList.add('hidden');
-        }
+        function openModal() { document.getElementById('modal').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('modal').classList.add('hidden'); }
 
-        // Impact Counter Logic
         const impactBtn = document.getElementById('impact-btn');
         const countDisplay = document.getElementById('impact-count');
         const progressFill = document.getElementById('progress-fill');
         const thanksMsg = document.getElementById('thanks-msg');
         
         const goal = 20;
-        const baseCount = 11; // Hardcoded base
+        const baseCount = 11;
 
         function updateUI(val) {
             countDisplay.innerText = val;
             progressFill.style.width = (val / goal) * 100 + '%';
         }
 
-        // Check LocalStorage for persistence
         let hasClicked = localStorage.getItem('hasClickedImpact');
-
         if (hasClicked) {
             updateUI(baseCount + 1);
             impactBtn.disabled = true;
@@ -214,5 +247,3 @@
     </script>
 </body>
 </html>
-
-
